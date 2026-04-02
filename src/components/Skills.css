@@ -53,12 +53,21 @@
 }
 
 @keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .skills-description {
+  padding-top: -100px !important;
   font-size: 18px;
   line-height: 1.7;
   color: rgba(255, 255, 255, 0.8);
@@ -244,12 +253,12 @@
   .skills-content {
     gap: 40px;
   }
-  
+
   .skill-description-container {
     padding: 30px;
     min-height: 250px;
   }
-  
+
   .skills-grid {
     max-width: 500px;
     gap: 25px;
@@ -261,16 +270,16 @@
     grid-template-columns: 1fr;
     gap: 60px;
   }
-  
+
   .skills-info {
     position: static;
     order: 2;
   }
-  
+
   .skills-grid-container {
     order: 1;
   }
-  
+
   .skills-grid {
     max-width: 700px;
     grid-template-columns: repeat(5, 1fr);
@@ -283,37 +292,37 @@
     padding: 0;
     min-height: 100vh;
   }
-  
+
   .skills-header {
     margin-bottom: 20px;
   }
-  
+
   .skills-content {
     gap: 20px;
   }
-  
+
   .skill-description-container {
     padding: 30px 25px;
     min-height: 200px;
   }
-  
+
   .skill-description-title {
     font-size: 1.5rem;
   }
-  
+
   .skill-description-text {
     font-size: 14px;
   }
-  
+
   .skills-grid {
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
   }
-  
+
   .skill-icon {
     font-size: 2.5rem;
   }
-  
+
   .skill-name {
     font-size: 11px;
   }
@@ -324,15 +333,15 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
   }
-  
+
   .skill-icon {
     font-size: 2.2rem;
   }
-  
+
   .skill-name {
     font-size: 10px;
   }
-  
+
   .skill-description-container {
     padding: 25px 20px;
   }
@@ -350,6 +359,7 @@
 .skill-description {
   will-change: transform, opacity;
 }
+
 /* 3D Desk Model Container */
 .desk-model-container {
   width: 100%;
@@ -390,9 +400,12 @@
 }
 
 @keyframes gentle-float-desk {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-6px);
   }
@@ -418,4 +431,36 @@
     height: 180px;
     margin-top: 10px;
   }
+}
+
+/* Reduce gaps for new sections */
+.education-section,
+.certificates-section,
+.achievements-section {
+  margin-top: -120px;
+  min-height: unset !important;
+  height: auto !important;
+  /* margin: 0 !important; */
+  display: block !important;
+}
+
+/* Gap A: A little more distance after Projects */
+.certificates-section {
+  padding: 80px 0 60px 0 !important;
+}
+
+/* Gap B: Larger distance between Certificates & Achievements */
+.achievements-section {
+  margin-top: 20px !important;
+}
+
+/* Gap B: Same larger distance between Achievements & Education */
+.education-section {
+  padding: 80px 0 100px 0 !important;
+}
+
+.education-section .skills-header .skills-title,
+.certificates-section .skills-header .skills-title,
+.achievements-section .skills-header .skills-title {
+  margin-top: 0;
 }

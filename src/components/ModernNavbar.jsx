@@ -1,5 +1,5 @@
 import { FaLinkedinIn, FaGithub, FaInstagram } from "react-icons/fa";
-import { FiFileText, FiUser, FiFolder, FiMail, FiMenu, FiX } from "react-icons/fi";
+import { FiFileText, FiUser, FiFolder, FiMail, FiMenu, FiX, FiBook, FiAward, FiStar } from "react-icons/fi";
 import { useEffect, useState } from 'react';
 
 const ModernNavbar = () => {
@@ -313,6 +313,27 @@ const ModernNavbar = () => {
                   onClick={closeMobileMenu}
                 />
                 <NavButton 
+                  icon={<FiBook />} 
+                  text="Education" 
+                  href="#education"
+                  mobile={true}
+                  onClick={closeMobileMenu}
+                />
+                <NavButton 
+                  icon={<FiAward />} 
+                  text="Certificates" 
+                  href="#certificates"
+                  mobile={true}
+                  onClick={closeMobileMenu}
+                />
+                <NavButton 
+                  icon={<FiStar />} 
+                  text="Achievements" 
+                  href="#achievements"
+                  mobile={true}
+                  onClick={closeMobileMenu}
+                />
+                <NavButton 
                   icon={<FiMail />} 
                   text="Contact" 
                   href="#connect"
@@ -414,6 +435,21 @@ const ModernNavbar = () => {
             icon={<FiFolder />} 
             text="Projects" 
             href="#projects"
+          />
+          <NavButton 
+            icon={<FiBook />} 
+            text="Education" 
+            href="#education"
+          />
+          <NavButton 
+            icon={<FiAward />} 
+            text="Certificates" 
+            href="#certificates"
+          />
+          <NavButton 
+            icon={<FiStar />} 
+            text="Achievements" 
+            href="#achievements"
           />
           <NavButton 
             icon={<FiMail />} 

@@ -1,92 +1,122 @@
-import { Suspense, useRef, useEffect, useState } from 'react';
+import { Suspense, useRef, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, useTexture } from '@react-three/drei';
+import { OrbitControls, useGLTF } from '@react-three/drei';
+import * as THREE from 'three';
 
-// 3D Card with PNG
+// Preload the GLB model
+useGLTF.preload('/pc.glb');
+
 function Desk() {
-  const meshRef = useRef();
-  const texture = useTexture('/pc.png');
-  const [isMobile, setIsMobile] = useState(false);
+  const modelRef = useRef();
+  const { scene, error } = useGLTF('/pc.glb');
 
-  // Mobile detection
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Smooth rotation
-  useFrame(() => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += 0.003;
+  // Add subtle rotation animation
+  useFrame((state) => {
+    if (modelRef.current) {
+      modelRef.current.rotation.y = -1 + Math.sin(state.clock.elapsedTime * 0.2) * 0.1;
     }
   });
 
-  const scale = isMobile ? [2.5, 2.5, 2.5] : [2, 2, 2];
+  useEffect(() => {
+    if (scene) {
+      // Keep original materials and colors
+      scene.traverse((child) => {
+        if (child.isMesh) {
+          child.castShadow = true;
+          child.receiveShadow = true;
+        }
+      });
+    }
+  }, [scene]);
+
+  if (error) {
+    return (
+      <mesh ref={modelRef}>
+        <boxGeometry args={[10, 0.5, 0.5]} />
+        <meshStandardMaterial color="#8b5cf6" />
+      </mesh>
+    );
+  }
+
+  if (!scene) {
+    return <LoadingFallback />;
+  }
 
   return (
-    <mesh ref={meshRef} scale={scale}>
-      <boxGeometry args={[1, 1, 0.05]} />
-
-      <meshStandardMaterial
-        map={texture}
-        roughness={0.3}
-        metalness={0.1}
-      />
-    </mesh>
+    <primitive
+      ref={modelRef}
+      object={scene}
+      scale={[0.4, 0.4, 0.4]}
+      position={[0, 0, -0.5]}
+      rotation={[-0.1, 0, 0]}
+    />
   );
 }
 
-// Loading spinner
 function LoadingFallback() {
   const meshRef = useRef();
 
   useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.rotation.y = state.clock.elapsedTime;
+      meshRef.current.rotation.y = state.clock.elapsedTime * 0.8;
     }
   });
 
   return (
     <mesh ref={meshRef}>
-      <sphereGeometry args={[0.3, 16, 16]} />
-      <meshBasicMaterial color="#10b981" />
+      <sphereGeometry args={[0.25, 16, 16]} />
+      <meshBasicMaterial color="#06b6d4" />
     </mesh>
   );
 }
 
-export default function DeskModel() {
+export default function SkillsModel() {
   return (
-    <div
-      style={{
-        width: '600%',
-        height: '20%',
-        minHeight: '400px',
-        marginBottom: '50px',
-        background: 'transparent',
-      }}
-    >
+    <div style={{
+      width: '900px',
+      height: '380px',
+      position: 'relative',
+      background: 'transparent'
+    }}>
       <Canvas
-        camera={{ position: [0, 0, 3], fov: 50 }}
-        dpr={[1, 2]}
-        shadows
+        camera={{ position: [4, 4, 4], fov: 45 }}
+        style={{
+          width: '100%',
+          height: '100%'
+        }}
+        gl={{
+          alpha: true,
+          antialias: true
+        }}
       >
-        <ambientLight intensity={0.8} />
-        <directionalLight position={[2, 2, 2]} intensity={1} />
-        <pointLight position={[-2, -2, 2]} intensity={0.5} />
+        {/* Clean lighting for Skills section */}
+        <ambientLight intensity={0.7} />
+        <directionalLight
+          position={[8, 8, 4]}
+          intensity={1.0}
+          castShadow
+        />
+        <pointLight position={[-5, 5, 5]} intensity={0.4} color="#06b6d4" />
+        <pointLight position={[5, -5, 5]} intensity={0.4} color="#8b5cf6" />
 
+        {/* Desk Model */}
         <Suspense fallback={<LoadingFallback />}>
           <Desk />
         </Suspense>
 
+        {/* Controls */}
         <OrbitControls
-          enableZoom={false}
+          enableZoom={true}
           enablePan={false}
-          autoRotate
+          enableRotate={true}
+          autoRotate={true}
           autoRotateSpeed={1}
+          enableDamping={true}
+          dampingFactor={0.05}
+          minDistance={2}
+          maxDistance={15}
         />
       </Canvas>
     </div>
   );
-} 
+}
