@@ -37,7 +37,7 @@ export const Education = () => {
     },
     {
       degree: "Higher Secondary School",
-      institution: "Jingle Bell Public School",
+      institution: "Jingle Bells Public School",
       year: "2021 - 2023",
       description: "Completed my higher secondary education with a strong focus on science and mathematics."
     }
